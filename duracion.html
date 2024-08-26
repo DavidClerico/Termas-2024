@@ -1,0 +1,307 @@
+<!--
+
+crear pagina en html:
+fondo negro,
+letras blancas,
+bordes grises,
+usar localstorage para recuperar los valores de las secciones 1 y 2,
+contenido 3 secciones separadas entre si por bordes.
+
+seccion 1:
+rotulo T1,
+contenido: 5 celdas  de texto y un boton.
+
+celda 1:
+rotulo: Turno,
+valor: 1,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 2:
+rotulo: Dia,
+Valor: 1,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 3:
+rotulo: Hora,
+Valor: 00,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 4:
+rotulo: Minuto,
+Valor: 00,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 5:
+rotulo: Segundo,
+Valor: 00,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+boton:
+rotulo: Reegistrar T1;
+un click en este boton carga la hora del reloj interno en la celda 3, el minuto en la celda 4,
+y el segundo en la celda 5, tambien se recalcula el valor de duracion.
+
+----
+
+seccion 2:
+rotulo: Turno T2,
+contenido: 5 celdas  de texto y un boton.
+
+celda 1:
+rotulo: Turno,
+valor: 2,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 2:
+rotulo: Dia,
+Valor: 1,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 3:
+rotulo: Hora,
+Valor: 23,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 4:
+rotulo: Minuto,
+Valor: 59,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+celda 5:
+rotulo: Segundo,
+Valor: 59,
+esta celda es editable y con enter se aceptan nuevos valores y se recalcula el valor de duracion.
+
+boton:
+rotulo: Reegistrar T2;
+un click en este boton carga la hora del reloj interno en la celda 3, el minuto en la celda 4,
+y el segundo en la celda 5,tambien se recalcula el valor de duracion.
+
+---- 
+
+seccion 3: 
+rotulo:Duracion,
+contenido: dos celdas:
+en esta seccion se almacena el resultado de la siguiente formula:
+promedio duracion = (Fecha2 - fecha1) / (turno2-turno1).
+el resultado se muestra en minutos, (celda 1),  y segundos, (celda 2).
+el calculo se realiza cada vez que se carga la pagina y cada vez que se modifican los parametros 
+de la formula que calcula la duracion.
+
+celda 1:
+rtulo: Minutos.
+
+celda 2:
+rotulo: Segundos.
+
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tiempos</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: black;
+            color: white;
+            border: 1px solid gray;
+        }
+        .section {
+            border: 1px solid gray;
+            padding: 10px;
+            margin: 10px;
+        }
+        .cell {
+            display: inline;
+            margin: 10px;
+        }
+        .hms {
+            border: 1px solid gray; 
+            margin: 10px;
+            padding: 10px;
+        }
+        h2 {
+            color: yellow;
+        }
+        input {
+            text-align: center;
+            background-color: black;
+            color: white;
+            border: 1px solid gray;
+            width: 50px;
+            margin-left: 10px;
+        }
+        button {
+            background-color: gray;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        #boton_volver {
+            color: white;
+            background: red;
+            padding: 10px;
+            margin: 10px ;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="section" id="section1">
+        <h2>Turno T1</h2>
+        <div class="cell">
+            <label for="turno1">Turno</label>
+            <input type="text" id="turno1" value="1">
+        </div>
+        <div class="cell">
+            <label for="dia1">Día</label>
+            <input type="text" id="dia1" value="1">
+        </div>
+        <div class="hms">
+            <div class="cell">
+                <label for="hora1">Hora</label>
+                <input type="text" id="hora1" value="00">
+            </div>
+            <div class="cell">
+                <label for="minuto1">Minuto</label>
+                <input type="text" id="minuto1" value="00">
+            </div>
+            <div class="cell">
+                <label for="segundo1">Segundo</label>
+                <input type="text" id="segundo1" value="00">
+            </div>
+            <button id="registrarT1">Registrar T1</button>
+        </div>
+    </div>
+
+    <div class="section" id="section2">
+        <h2>Turno T2</h2>
+        <div class="cell">
+            <label for="turno2">Turno</label>
+            <input type="text" id="turno2" value="2">
+        </div>
+        <div class="cell">
+            <label for="dia2">Día</label>
+            <input type="text" id="dia2" value="1">
+        </div>
+
+        <div class="hms">
+            <div class="cell">
+                <label for="hora2">Hora</label>
+                <input type="text" id="hora2" value="23">
+            </div>
+            <div class="cell">
+                <label for="minuto2">Minuto</label>
+                <input type="text" id="minuto2" value="59">
+            </div>
+            <div class="cell">
+                <label for="segundo2">Segundo</label>
+                <input type="text" id="segundo2" value="59">
+            </div>
+            <button id="registrarT2">Registrar T2</button>
+        </div>
+
+    </div>
+
+    <div class="section" id="section3">
+        <h2>Duración</h2>
+        <div class="cell">
+            <label for="duracionMinutos">Minutos</label>
+            <input type="text" id="duracionMinutos" readonly>
+        </div>
+        <div class="cell">
+            <label for="duracionSegundos">Segundos</label>
+            <input type="text" id="duracionSegundos" readonly>
+        </div>
+    </div>
+
+    <!-- boton volver -->
+    <button  id="boton_volver" onclick="window.location.href='index.html'">Volver</button>
+ 
+ <script>
+        function obtenerTiempoActual() {
+            const ahora = new Date();
+            return {
+                hora: ahora.getHours(),
+                minuto: ahora.getMinutes(),
+                segundo: ahora.getSeconds(),
+                dia: ahora.getDate(),
+            };
+        }
+
+        function registrarTiempo(idHora, idMinuto, idSegundo) {
+            const tiempo = obtenerTiempoActual();
+            document.getElementById(idHora).value = tiempo.hora;
+            document.getElementById(idMinuto).value = tiempo.minuto;
+            document.getElementById(idSegundo).value = tiempo.segundo;
+            recalcularDuracion();
+        }
+
+        function recalcularDuracion() {
+            const turno1 = parseInt(document.getElementById('turno1').value) || 1;
+            const turno2 = parseInt(document.getElementById('turno2').value) || 2;
+
+            const fecha1 = new Date(2024, 0, parseInt(document.getElementById('dia1').value), parseInt(document.getElementById('hora1').value), parseInt(document.getElementById('minuto1').value), parseInt(document.getElementById('segundo1').value));
+            const fecha2 = new Date(2024, 0, parseInt(document.getElementById('dia2').value), parseInt(document.getElementById('hora2').value), parseInt(document.getElementById('minuto2').value), parseInt(document.getElementById('segundo2').value));
+
+            const duracionTotal = (fecha2 - fecha1) / 1000; // Duración en segundos
+            const promedioDuracion = duracionTotal / (turno2 - turno1);
+
+            const minutos = Math.floor(promedioDuracion / 60);
+            const segundos = Math.floor(promedioDuracion % 60);
+
+            document.getElementById('duracionMinutos').value = minutos;
+            document.getElementById('duracionSegundos').value = segundos;
+
+            // Guardar valores en localStorage
+            localStorage.setItem('turno1', document.getElementById('turno1').value);
+            localStorage.setItem('dia1', document.getElementById('dia1').value);
+            localStorage.setItem('hora1', document.getElementById('hora1').value);
+            localStorage.setItem('minuto1', document.getElementById('minuto1').value);
+            localStorage.setItem('segundo1', document.getElementById('segundo1').value);
+            localStorage.setItem('turno2', document.getElementById('turno2').value);
+            localStorage.setItem('dia2', document.getElementById('dia2').value);
+            localStorage.setItem('hora2', document.getElementById('hora2').value);
+            localStorage.setItem('minuto2', document.getElementById('minuto2').value);
+            localStorage.setItem('segundo2', document.getElementById('segundo2').value);
+        }
+
+        function cargarValores() {
+            document.getElementById('turno1').value = localStorage.getItem('turno1') || 1;
+            document.getElementById('dia1').value = localStorage.getItem('dia1') || 1;
+            document.getElementById('hora1').value = localStorage.getItem('hora1') || 0;
+            document.getElementById('minuto1').value = localStorage.getItem('minuto1') || 0;
+            document.getElementById('segundo1').value = localStorage.getItem('segundo1') || 0;
+
+            document.getElementById('turno2').value = localStorage.getItem('turno2') || 2;
+            document.getElementById('dia2').value = localStorage.getItem('dia2') || 1;
+            document.getElementById('hora2').value = localStorage.getItem('hora2') || 23;
+            document.getElementById('minuto2').value = localStorage.getItem('minuto2') || 59;
+            document.getElementById('segundo2').value = localStorage.getItem('segundo2') || 59;
+        }
+
+        document.getElementById('registrarT1').addEventListener('click', () => registrarTiempo('hora1', 'minuto1', 'segundo1'));
+        document.getElementById('registrarT2').addEventListener('click', () => registrarTiempo('hora2', 'minuto2', 'segundo2'));
+
+        window.addEventListener('load', () => {
+            cargarValores();
+            recalcularDuracion();
+        });
+
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    recalcularDuracion();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!--
+
+en las pantallas 2, 3 y 4:
+centrar los valores de las celdas.
+ajustar el tamaño de las celdas al contenido dandole un poco de margen.
+separar un poco el rotulo con padding o margen.
+
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Actuación</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 20px;
+            border: 1px solid gray;
+            display: none;
+            width: 300px;
+            margin: auto;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        .cell {
+            border: 1px solid gray;
+            padding: 10px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .highlight-cell:hover {
+            color: yellow;
+        }
+
+        .input-cell {
+            background-color: black;
+            border: 1px solid gray;
+            padding: 10px;
+            color: white;
+            text-align: center;
+            width: auto;
+            margin-left: 10px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .buttons button {
+            padding: 10px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: gray;
+            color: black;
+            border: none;
+        }
+
+        .label {
+            margin-right: 10px;
+        }
+
+        #boton_volver {
+            color: white;
+            background: red;
+            padding: 10px;
+            margin: 10px ;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Pantalla 1 -->
+    <div id="pantalla1" class="container active">
+        <h1>Cálculo Hora de Actuación</h1>
+        <div class="cell highlight-cell" onclick="mostrarPantalla('pantalla2')">
+            <label>Hora inicio jornada</label>
+            <div id="horaInicio">08:00</div>
+        </div>
+        <div class="cell highlight-cell" onclick="mostrarPantalla('pantalla3')">
+            <label>Turno</label>
+            <div id="turno">1</div>
+        </div>
+        <div class="cell highlight-cell" onclick="mostrarPantalla('pantalla4')">
+            <label>Duración</label>
+            <div id="duracion">12:00</div>
+        </div>
+        <div class="cell">
+            <label>Actuación</label>
+            <div id="horaActuacion">08:12:00</div>
+        </div>
+
+        <button id="boton_volver" onclick="window.location.href='index.html'">Volver</button>
+
+    </div>
+
+    <!-- Pantalla 2 -->
+    <div id="pantalla2" class="container">
+        <h1>Cambio de Inicio</h1>
+        <div class="cell">
+            <label class="label">Hora</label>
+            <input type="number" id="inputHora" value="08" min="0" max="23" class="input-cell">
+        </div>
+        <div class="cell">
+            <label class="label">Minuto</label>
+            <input type="number" id="inputMinuto" value="00" min="0" max="59" class="input-cell">
+        </div>
+        <div class="buttons">
+            <button onclick="cambiarHoraInicio()">Aceptar</button>
+            <button onclick="mostrarPantalla('pantalla1')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Pantalla 3 -->
+    <div id="pantalla3" class="container">
+        <h1>Cambio de Turno</h1>
+        <div class="cell">
+            <label class="label">Turno</label>
+            <input type="number" id="inputTurno" value="1" min="1" class="input-cell">
+        </div>
+        <div class="buttons">
+            <button onclick="cambiarTurno()">Aceptar</button>
+            <button onclick="mostrarPantalla('pantalla1')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Pantalla 4 -->
+    <div id="pantalla4" class="container">
+        <h1>Cambio de Duración</h1>
+        <div class="cell">
+            <label class="label">Minuto</label>
+            <input type="number" id="inputMinutoDuracion" value="12" min="0" class="input-cell">
+        </div>
+        <div class="cell">
+            <label class="label">Segundo</label>
+            <input type="number" id="inputSegundoDuracion" value="00" min="0" max="59" class="input-cell">
+        </div>
+        <div class="buttons">
+            <button onclick="cambiarDuracion()">Aceptar</button>
+            <button onclick="mostrarPantalla('pantalla1')">Cancelar</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Cargar valores desde localStorage
+        window.onload = function() {
+            if (localStorage.getItem('horaInicio')) {
+                document.getElementById('horaInicio').innerText = localStorage.getItem('horaInicio');
+            }
+            if (localStorage.getItem('turno')) {
+                document.getElementById('turno').innerText = localStorage.getItem('turno');
+            }
+            if (localStorage.getItem('duracion')) {
+                document.getElementById('duracion').innerText = localStorage.getItem('duracion');
+            }
+            calcularHoraActuacion();
+        };
+
+        function mostrarPantalla(pantalla) {
+            document.querySelectorAll('.container').forEach(function(div) {
+                div.classList.remove('active');
+            });
+            document.getElementById(pantalla).classList.add('active');
+        }
+
+        function cambiarHoraInicio() {
+            var hora = document.getElementById('inputHora').value.padStart(2, '0');
+            var minuto = document.getElementById('inputMinuto').value.padStart(2, '0');
+            var horaInicio = hora + ':' + minuto;
+            document.getElementById('horaInicio').innerText = horaInicio;
+
+            // Guardar en localStorage
+            localStorage.setItem('horaInicio', horaInicio);
+
+            mostrarPantalla('pantalla1');
+            calcularHoraActuacion();
+        }
+
+        function cambiarTurno() {
+            var turno = document.getElementById('inputTurno').value;
+            document.getElementById('turno').innerText = turno;
+
+            // Guardar en localStorage
+            localStorage.setItem('turno', turno);
+
+            mostrarPantalla('pantalla1');
+            calcularHoraActuacion();
+        }
+
+        function cambiarDuracion() {
+            var minuto = document.getElementById('inputMinutoDuracion').value.padStart(2, '0');
+            var segundo = document.getElementById('inputSegundoDuracion').value.padStart(2, '0');
+            var duracion = minuto + ':' + segundo;
+            document.getElementById('duracion').innerText = duracion;
+
+            // Guardar en localStorage
+            localStorage.setItem('duracion', duracion);
+
+            mostrarPantalla('pantalla1');
+            calcularHoraActuacion();
+        }
+
+        function calcularHoraActuacion() {
+            var horaInicio = document.getElementById('horaInicio').innerText.split(':');
+            var turno = parseInt(document.getElementById('turno').innerText) - 1;
+            var duracion = document.getElementById('duracion').innerText.split(':');
+
+            var hora = parseInt(horaInicio[0]);
+            var minuto = parseInt(horaInicio[1]);
+            var duracionMinutos = parseInt(duracion[0]);
+            var duracionSegundos = parseInt(duracion[1]);
+
+            minuto += turno * duracionMinutos;
+            hora += Math.floor(minuto / 60);
+            minuto = minuto % 60;
+
+            // Corregir cálculo de los segundos
+            var totalSegundos = duracionSegundos * turno;
+            minuto += Math.floor(totalSegundos / 60);
+            var segundosRestantes = totalSegundos % 60;
+
+            document.getElementById('horaActuacion').innerText = hora.toString().padStart(2, '0') + ':' + minuto.toString().padStart(2, '0') + ':' + segundosRestantes.toString().padStart(2, '0');
+        }
+    </script>
+</body>
+</html>

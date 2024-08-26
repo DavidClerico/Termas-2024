@@ -1,0 +1,72 @@
+<!--
+
+crear pagina en html,
+fondo negro,
+letras blancas,
+bordes grises.
+Rotulo: Termas de Rio Hondo 2024.
+contenido: 3 botones.
+
+boton 1:
+rotulo: Duracion,
+un ckick en este boton cierre la pagina actual uy abre la pagina: "duracion.html"
+
+boton 2:
+rotulo: Actuacion,
+un ckick en este boton cierre la pagina actual uy abre la pagina: "actuacion.html"
+
+boton 3:
+rotulo: salir.
+fondo rojo,
+un click en este boton cierra la pagina actual.
+
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Ashpa Sunmaj</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            border: 1px solid gray;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        h1 {
+            margin-bottom: 50px;
+        }
+        button {
+            padding: 15px 30px;
+            margin: 20px;
+            font-size: 18px;
+            border: 1px solid gray;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: gray;
+        }
+        #botonSalir {
+            background-color: red;
+        }
+        #botonSalir:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Termas de Rio Hondo 2024</h1>
+
+    <button onclick="window.location.href='duracion.html'">Duración</button>
+    <button onclick="window.location.href='actuacion.html'">Actuación</button>
+    <button id="botonSalir" onclick="window.close()">Salir</button>
+
+</body>
+</html>
